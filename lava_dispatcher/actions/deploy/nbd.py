@@ -97,7 +97,7 @@ class NbdAction(Action):
             action="tftp-deploy", label="tftp", key="suffix", value=suffix
         )
         # we need tftp _and_ nbd-server
-        which("in.tftpd")
+        which(["in.tftpd", "atftpd"])
         which("nbd-server")
 
         # Check that the tmp directory is in the nbdd_dir or in /tmp for the

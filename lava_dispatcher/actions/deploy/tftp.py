@@ -79,7 +79,7 @@ class TftpAction(Action):
             return
         if "nfsrootfs" in self.parameters and "persistent_nfs" in self.parameters:
             self.errors = "Only one of nfsrootfs or persistent_nfs can be specified"
-        which("in.tftpd")
+        which(["in.tftpd", "atftpd"])
 
         # Check that the tmp directory is in the tftpd_dir or in /tmp for the
         # unit tests

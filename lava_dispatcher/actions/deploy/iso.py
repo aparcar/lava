@@ -58,7 +58,7 @@ class DeployIsoAction(Action):
         self.set_namespace_data(
             action=self.name, label="iso", key="suffix", value=suffix
         )
-        which("in.tftpd")
+        which(["in.tftpd", "atftpd"])
 
     def populate(self, parameters):
         self.preseed_path = self.mkdtemp(override=filesystem.tftpd_dir())
