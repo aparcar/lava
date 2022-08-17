@@ -42,11 +42,20 @@ def _which_check(path, match):
 
 
 def which(path, match=os.path.isfile):
-    exefile = _which_check(path, match)
+    if isinstance(path, str):
+        path = [path]
+
+    exefile = None
+
+    for p in path:
+        exefile = _which_check(p, match)
+        if exefile:
+            break
+
     if not exefile:
-        raise InfrastructureError("Cannot find command '%s' in $PATH" % path)
+        raise InfrastructureError("Cannot find command '%s' in $PATH" % p)
 
     if os.stat(exefile).st_mode & S_IXUSR != S_IXUSR:
-        raise InfrastructureError("Cannot execute '%s' at '%s'" % (path, exefile))
+        raise InfrastructureError("Cannot execute '%s' at '%s'" % (p, exefile))
 
     return exefile
