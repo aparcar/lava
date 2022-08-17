@@ -23,7 +23,6 @@ import os
 import shutil
 import tarfile
 import tempfile
-import guestfs
 import glob
 import logging
 import magic
@@ -137,6 +136,7 @@ def prepare_guestfs(output, overlay, mountpoint, size):
     :param size: size of the filesystem in Mb
     :return blkid of the guest device
     """
+    import guestfs
     guest = guestfs.GuestFS(python_return_dict=True)
     guest.disk_create(output, "qcow2", size * 1024 * 1024)
     guest.add_drive_opts(output, format="qcow2", readonly=False)
@@ -177,6 +177,7 @@ def prepare_install_base(output, size):
     ready for an installer to partition, create filesystem(s)
     and install files.
     """
+    import guestfs
     guest = guestfs.GuestFS(python_return_dict=True)
     guest.disk_create(output, "raw", size)
     guest.add_drive_opts(output, format="raw", readonly=False)
@@ -196,6 +197,7 @@ def copy_out_files(image, filenames, destination):
     filenames list must contain unique filenames even if the
     source files exist in separate directories.
     """
+    import guestfs
     if not isinstance(filenames, list):
         raise LAVABug("filenames must be a list")
     guest = guestfs.GuestFS(python_return_dict=True)
@@ -218,6 +220,7 @@ def copy_in_overlay(image, root_partition, overlay):
     is None the image is handled as a filesystem instead of
     partitioned image.
     """
+    import guestfs
     guest = guestfs.GuestFS(python_return_dict=True)
     guest.add_drive(image)
     _launch_guestfs(guest)
@@ -359,6 +362,7 @@ def copy_overlay_to_sparse_fs(image, overlay):
     Only copies the overlay to an image
     which has already been converted from sparse.
     """
+    import guestfs
     logger = logging.getLogger("dispatcher")
     guest = guestfs.GuestFS(python_return_dict=True)
     guest.add_drive(image)

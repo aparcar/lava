@@ -18,7 +18,6 @@
 # along
 # with this program; if not, see <http://www.gnu.org/licenses>.
 
-import guestfs
 import os
 import shutil
 from lava_dispatcher.action import Action, Pipeline
@@ -979,6 +978,7 @@ class AppendOverlays(Action):
         self._update(untar_file, create_tarfile)
 
     def update_guestfs(self):
+        import guestfs
         image = self.get_namespace_data(
             action="download-action", label=self.key, key="file"
         )
