@@ -25,7 +25,6 @@ import tarfile
 import tempfile
 import glob
 import logging
-import magic
 import errno
 from configobj import ConfigObj
 
@@ -424,6 +423,8 @@ def is_sparse_image(image):
     """
     Returns True if the image is an 'Android sparse image' else False.
     """
+    import magic
+
     image_magic = magic.open(magic.MAGIC_NONE)
     image_magic.load()
     return bool(image_magic.file(image).split(",")[0] == "Android sparse image")
