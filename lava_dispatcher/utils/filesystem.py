@@ -26,7 +26,6 @@ import tempfile
 import glob
 import logging
 import errno
-from configobj import ConfigObj
 
 from lava_common.exceptions import InfrastructureError, JobError, LAVABug
 from lava_common.constants import LXC_PATH, LAVA_LXC_HOME
@@ -96,7 +95,12 @@ def tftpd_dir():
     :return: real path to the TFTP directory or raises InfrastructureError
     """
     var_name = "TFTP_DIRECTORY"
-    if os.path.exists("/etc/default/tftpd-hpa"):
+    tftp_directory = os.getenv("TFTP_DIRECTORY")
+    if tftp_directory:
+        return os.path.realpath(value)
+    elif os.path.exists("/etc/default/tftpd-hpa"):
+        from configobj import ConfigObj
+
         config = ConfigObj("/etc/default/tftpd-hpa")
         value = config.get(var_name)
         return os.path.realpath(value)
